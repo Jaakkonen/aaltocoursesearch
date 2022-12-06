@@ -1,6 +1,6 @@
 from collections.abc import Iterable
 import re
-from typing import Literal
+from typing import Literal, Optional
 import pandas as pd
 import json
 import streamlit as st
@@ -110,7 +110,7 @@ def load_data() -> pd.DataFrame:
 
 
 def preferred_lang_df(
-    df: pd.DataFrame, preferred: Literal["fi", "sv", "en"] | None
+    df: pd.DataFrame, preferred: Optional[Literal["fi", "sv", "en"]]
 ) -> pd.DataFrame:
     """
     Selects only columns ending with preferred language code (or english if preferred is not available)
