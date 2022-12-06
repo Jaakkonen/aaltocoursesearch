@@ -255,8 +255,6 @@ def create_view():
   This app lets you explore the course realizations in Aalto University.
   Start by adding filters for the department and checking courses starting in
   next 2 months to inspect courses in beginning period.
-
-  **Hint**: Click the expand button next to the table while hovering over it to make it full screen.
   """
     )
     col1, col2, col3 = st.columns([.15, .1, .7])
@@ -301,6 +299,15 @@ def create_view():
     # https://github.com/streamlit/streamlit/issues/455
     # is required prior to that (now this could only be implemented using Dash...)
     st.dataframe(df)
+
+    st.write("""
+  **Hint**: Click the expand button next to the table while hovering over it to make it full screen.
+""")
+
+    st.write("""
+Made by [Jaakkonen](https://github.com/Jaakkonen) with extensive usage of guild room sofas 🛋️☕❤️.
+""")
+
 
 
 create_view()
