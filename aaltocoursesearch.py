@@ -305,13 +305,10 @@ def create_view():
     # is required prior to that (now this could only be implemented using Dash...)
     st.dataframe(df, height=900)
 
-    st.write("""
-  **Hint**: Click the expand button next to the table while hovering over it to make it full screen.
-""")
+    st.write("""**Hint**: Click the expand button next to the table while hovering over it to make it full screen.""")
 
-    st.write("""
-Made by [Jaakkonen](https://github.com/Jaakkonen) with extensive usage of guild room sofas 🛋️☕❤️.
-""")
+    st.write("Please submit all any bug reports and/or feature requests to the [GitHub repository](https://github.com/Jaakkonen/aaltocoursesearch).")
+    st.write("Made by [Jaakkonen](https://github.com/Jaakkonen) with extensive usage of guild room sofas 🛋️☕❤️.")
 
 
 
