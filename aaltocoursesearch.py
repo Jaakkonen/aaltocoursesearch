@@ -61,8 +61,8 @@ HIDDEN_COL_NAMES = {
     "summary.teachingPeriod": "Period",
     "summary.level": "Level",
     "summary.registration": "Registration",
-    "enrolmentStartDate": "Enrolment start",  # TODO: Add "Enrolment active" button & a date selector next to it if active
-    "enrolmentEndDate": "Enrolment end",
+    "enrolmentStartDate": "Enrollment start",  # TODO: Add "Enrolment active" button & a date selector next to it if active
+    "enrolmentEndDate": "Enrollment end",
     "summary.substitutes": "Substitutes",
     "summary.workload": "Workload",
     "summary.languageOfInstruction": "Language",
