@@ -1,4 +1,5 @@
 from collections.abc import Iterable
+import os
 import re
 from typing import Literal, Optional
 import pandas as pd
@@ -14,6 +15,7 @@ from pandas.api.types import (
 from dataclasses import dataclass
 import numpy as np
 from streamlit.delta_generator import DeltaGenerator
+import requests
 
 
 @dataclass
@@ -71,10 +73,13 @@ HIDDEN_COL_NAMES = {
 COL_NAMES = ACTIVE_COL_NAMES | HIDDEN_COL_NAMES
 COL_NAMES_INV = {v: k for k, v in COL_NAMES.items()}
 
-
+@st.cache_data
 def load_data() -> pd.DataFrame:
-    with open("courseunitrealizations.json") as f:
-        coursereals = json.load(f)
+    token = os.environ["AALTO_COURSES_API_TOKEN"]
+    coursereals = requests.get(
+        "https://course.api.aalto.fi/api/sisu/v1/courseunitrealisations",
+        params={"USER_KEY": token}
+    ).json()
 
     df = pd.json_normalize(coursereals)
 
@@ -105,6 +110,7 @@ def load_data() -> pd.DataFrame:
         "summary.cefrLevel",  # Relevant only for language courses
         "mincredits",  # Duplicates credits.min but as string
     }
+    df.type = df['type'].apply(lambda x: TYPES_READABLE.get(x, x))
 
     return df[[col for col in df.columns if col not in ALWAYS_IGNORE_FIELDS]]
 
@@ -236,7 +242,7 @@ def filter_df(
                 if user_text_input:
                     # TODO: case-insensitive
                     # TODO: verify regex is supported
-                    df = df[df[column].str.contains(user_text_input)]
+                    df = df[df[column].str.contains(user_text_input, case=False, regex=True)]
 
     return df
 
@@ -246,8 +252,7 @@ def filter_df(
 def create_view():
     st.set_page_config(layout="wide")
 
-    _load_data = st.cache(load_data)
-    df = _load_data()
+    df = load_data()
 
     st.title("Aalto course realizations")
     st.write(
@@ -258,7 +263,7 @@ def create_view():
   """
     )
     col1, col2, col3 = st.columns([.15, .1, .7])
-    lang = col1.selectbox("Preferred language", ("fi", "en", "sv"))
+    lang = col1.selectbox("Field language", ("fi", "en", "sv"))
     enrolment_active = col2.checkbox("Enrolment active")
 
     df = preferred_lang_df(df, lang)
@@ -298,7 +303,7 @@ def create_view():
     # TODO: Ability to select a row to get more info about it
     # https://github.com/streamlit/streamlit/issues/455
     # is required prior to that (now this could only be implemented using Dash...)
-    st.dataframe(df)
+    st.dataframe(df, height=900)
 
     st.write("""
   **Hint**: Click the expand button next to the table while hovering over it to make it full screen.
