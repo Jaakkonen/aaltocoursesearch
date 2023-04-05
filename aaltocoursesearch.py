@@ -254,17 +254,17 @@ def create_view():
 
     df = load_data()
 
-    st.title("Aalto course realizations")
+    st.title("Aalto course search")
     st.write(
         """\
-  This app lets you explore the course realizations in Aalto University.
+  Explere the courses available in Aalto University and when they are offered.
   Start by adding filters for the department and checking courses starting in
   next 2 months to inspect courses in beginning period.
   """
     )
     col1, col2, col3 = st.columns([.15, .1, .7])
     lang = col1.selectbox("Field language", ("fi", "en", "sv"))
-    enrolment_active = col2.checkbox("Enrolment active")
+    enrolment_active = col2.checkbox("Enrollment active")
 
     df = preferred_lang_df(df, lang)
 
@@ -278,7 +278,7 @@ def create_view():
 
     filterable_columns = [col for col in df.columns if not col.startswith('__')]
 
-    to_filter_columns = col3.multiselect("Filter dataframe on", filterable_columns)
+    to_filter_columns = col3.multiselect("Filter on", filterable_columns)
     modification_container = st.container()
 
     df = filter_df(
@@ -290,7 +290,7 @@ def create_view():
 
     if enrolment_active:
       now = pd.Timestamp.now()
-      df = df[(df["Enrolment start"] <= now) & (now <= df["Enrolment end"])]
+      df = df[(df["Enrollment start"] <= now) & (now <= df["Enrollment end"])]
 
     # Convert datetimes to readable format
     for c in df.columns:
